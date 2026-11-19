@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hegyek – Python gyakorlófeladat</title>
+<style>
+:root{--bg:#f2f5f3;--fg:#16251e;--mut:#55655d;--card:#fff;--line:#d3ddd7;--acc:#2c5b45;--hl:#a8630f;--code:#e8eeea;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#121916;--fg:#e4ebe7;--mut:#93a59b;--card:#192220;--line:#2c3a34;--acc:#79c9a0;--hl:#e0a252;--code:#0e1412;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 "Iowan Old Style",Palatino,Georgia,serif}
+main,header>div{max-width:820px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);padding-top:40px}
+h1{font-size:2.5rem;line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+h2{font-size:1.6rem;margin:2.4rem 0 .6rem;color:var(--acc)}
+h3{font-size:1.1rem;margin:1.6rem 0 .3rem}
+p{margin:.5rem 0}
+.lead{color:var(--mut);max-width:60ch}
+.gerinc{display:flex;align-items:flex-end;height:110px;margin-top:22px;gap:0}
+.gerinc i{flex:1;background:var(--acc);opacity:.85;clip-path:polygon(0 100%,50% 0,100% 100%);margin-left:-2%}
+.gerinc i:nth-child(even){opacity:.55}
+nav{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0;font-size:.95rem}
+nav a{color:var(--acc)}
+pre{position:relative;background:var(--code);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:.6rem 0}
+code{font:.88em ui-monospace,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+pre button{position:absolute;top:6px;right:6px;font:12px sans-serif;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:2px 8px;cursor:pointer}
+pre button:focus-visible,summary:focus-visible,nav a:focus-visible{outline:2px solid var(--hl);outline-offset:2px}
+ol li{margin:.7rem 0}
+.tipp{color:var(--mut);font-size:.95rem}
+.kih{color:var(--hl);font-weight:bold;white-space:nowrap}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:.8rem 0;padding:0 16px}
+summary{cursor:pointer;padding:10px 0;font-weight:bold}
+details[open] summary{border-bottom:1px solid var(--line);margin-bottom:8px}
+.megj{border-left:4px solid var(--hl);padding:2px 0 2px 14px;margin:1rem 0}
+footer{color:var(--mut);font-size:.9rem;padding:30px 0 50px}
+</style>
+</head>
+<body>
+<header><div>
+<h1>Hegyek</h1>
+<p class="lead">Python gyakorlófeladat: adatok beolvasása szöveges fájlból, szótárak listában, rendezés, számolás és fájlba írás.</p>
+<div class="gerinc" aria-hidden="true"><i style="height:100%"></i><i style="height:94%"></i><i style="height:93%"></i><i style="height:88%"></i><i style="height:87%"></i><i style="height:75%"></i><i style="height:72%"></i><i style="height:69%"></i><i style="height:69%"></i><i style="height:67%"></i></div>
+<nav><a href="#feladat">Feladatkiírás</a><a href="#bovitett">Bővített feladatok</a><a href="#megoldas">Megoldások</a></nav>
+</div></header>
+<main>
+
+<h2 id="feladat">Feladatkiírás</h2>
+<p>Magyarország tíz legmagasabb csúcsának adatait a <code>hegyek.txt</code> fájl tartalmazza (UTF-8 kódolás). Minden sor egy csúcs, a mezőket pontosvessző választja el: <code>név;hegység;magasság méterben</code>.</p>
+<pre class="kod">Kékes;Mátra;1014
+Istállós-kő;Bükk;959
+Csóványos;Börzsöny;939
+Nagy-Milic;Zempléni-hegység;896
+Írott-kő;Kőszegi-hegység;883
+Pilis;Pilis;757
+Karancs;Cserhát;729
+Kőris-hegy;Bakony;704
+Dobogó-kő;Visegrádi-hegység;700
+Zengő;Mecsek;682</pre>
+<p>Írj programot <code>hegyek.py</code> néven, amely a következő lépéseket hajtja végre:</p>
+<ol>
+<li><b>Beolvasás.</b> Olvasd be a fájlt! Minden sorból készíts szótárt <code>nev</code>, <code>hegyseg</code> és <code>magassag</code> kulccsal (a magasság egész szám legyen), és tedd a szótárakat egy listába. Az üres sorokat hagyd ki. Ha a fájl nem létezik, írd ki: „A fájl nem található!”. A beolvasás végén írd ki a csúcsok számát.</li>
+<li><b>Listázás.</b> Írd ki az összes csúcsot soronként ebben a formában: <code>Kékes -> Mátra: 1014 méter.</code> A lista után írj ki egy elválasztó vonalat.</li>
+<li><b>Összeg és átlag.</b> Számold ki a magasságok összegét és átlagát! Ha nincs adat, az átlag helyett ezt írd ki: „Nincs adat!”.</li>
+<li><b>Rendezés.</b> Rendezd a listát magasság szerint növekvő sorrendbe, majd írd ki a legmagasabb és a legalacsonyabb csúcs nevét és magasságát.</li>
+<li><b>Fájlba írás.</b> A <code>magas_hegyek.txt</code> fájlba írd ki azokat a csúcsokat, amelyek legalább 900 méter magasak, magasság szerint csökkenő sorrendben, a bemeneti fájllal azonos formában. A képernyőn jelezd, hogy elkészült a fájl.</li>
+</ol>
+<p><b>Mintakimenet</b> a fenti adatokkal:</p>
+<pre class="kod">Csúcsok száma: 10
+--------------------------------------------------
+Kékes -> Mátra: 1014 méter.
+Istállós-kő -> Bükk: 959 méter.
+Csóványos -> Börzsöny: 939 méter.
+Nagy-Milic -> Zempléni-hegység: 896 méter.
+Írott-kő -> Kőszegi-hegység: 883 méter.
+Pilis -> Pilis: 757 méter.
+Karancs -> Cserhát: 729 méter.
+Kőris-hegy -> Bakony: 704 méter.
+Dobogó-kő -> Visegrádi-hegység: 700 méter.
+Zengő -> Mecsek: 682 méter.
+--------------------------------------------------
+Magasságok összege: 8263 méter.
+Átlagmagasság: 826.3 méter.
+--------------------------------------------------
+Legmagasabb: Kékes -> 1014 méter, a legalacsonyabb: Zengő -> 682 méter.
+--------------------------------------------------
+A legalább 900 méteres hegyek listáját a magas_hegyek.txt fájlba írtam!</pre>
+<p>A <code>magas_hegyek.txt</code> tartalma:</p>
+<pre class="kod">Kékes;Mátra;1014
+Istállós-kő;Bükk;959
+Csóványos;Börzsöny;939</pre>
+
+<h2 id="bovitett">Bővített feladatsor</h2>
+<p>Az alapfeladat kész programját bővítsd tovább! A 6–11. feladat a már beolvasott <code>hegyek</code> listával dolgozik, a 12. a beolvasást írja át.</p>
+<ol start="6">
+<li><b>Szűrés és számlálás.</b> Hány csúcs magasabb 800 méternél? Írd ki a darabszámot.</li>
+<li><b>Keresés.</b> Kérj be a felhasználótól egy hegységnevet (kis- és nagybetűre ne legyen érzékeny), és írd ki a hozzá tartozó csúcsot és magasságot. Ha nincs ilyen hegység, írd ki: „Nincs ilyen hegység a listában!”.<br><span class="tipp">Tipp: a <code>.lower()</code> metódus kisbetűssé alakítja a szöveget, a <code>break</code> kilép a ciklusból.</span></li>
+<li><b>Kategóriák.</b> Sorold a csúcsokat három kategóriába: <i>magas</i> (legalább 900 m), <i>közepes</i> (700–899 m), <i>alacsony</i> (700 m alatt). Számold meg, hány csúcs esik az egyes kategóriákba, és az eredményt tárold szótárban.</li>
+<li><b>Eltérés az átlagtól.</b> Minden csúcs mellé írd ki, hány méterrel van az átlag felett vagy alatt, egy tizedesre kerekítve és előjellel (például <code>Kékes: +187.7 m</code>).<br><span class="tipp">Tipp: az <code>f"{x:+.1f}"</code> előjellel és egy tizedesjeggyel írja ki az <code>x</code> értékét.</span></li>
+<li><b>Névsor.</b> Írd ki a csúcsokat név szerinti ábécésorrendben! Először próbáld ki a sima <code>sort</code>-ot, és figyeld meg, hová kerül az Írott-kő. Aztán javítsd ki úgy, hogy az ékezetes betűk is a helyükre kerüljenek.</li>
+<li><b>Új csúcs felvétele.</b> Kérd be egy új csúcs nevét, hegységét és magasságát, és fűzd hozzá a <code>hegyek.txt</code> végéhez. Ha a magasság nem egész szám, ne írj a fájlba, hanem jelezz hibát.<br><span class="tipp">Tipp: a fájlt <code>"a"</code> móddal nyisd meg, a hibát pedig <code>try</code>/<code>except ValueError</code> szerkezettel kapd el.</span></li>
+<li><span class="kih">Kihívás:</span> <b>Hibatűrő beolvasás.</b> Írd át az 1. feladat beolvasását úgy, hogy a hibás sorokat (nem három mező van, vagy a magasság nem szám) kihagyja és megszámolja. A végén írd ki, hány csúcsot olvasott be és hány sort hagyott ki. Teszteld egy szándékosan elrontott fájllal, például tegyél bele egy <code>Teszt;Mátra;abc</code> sort.</li>
+</ol>
+
+<h2 id="megoldas">Megoldások</h2>
+
+<details>
+<summary>Alapfeladat (1–5. feladat)</summary>
+<pre class="kod">hegyek = []
+elvalaszto = "-" * 50
+
+def rendezes(hegy):
+    return hegy["magassag"]
+
+try:
+    with open("hegyek.txt", "r", encoding="UTF-8") as file:
+        for sor in file:
+            if sor.strip() == "":
+                continue
+            adatok = sor.strip().split(";")
+            hegy = {
+                "nev": adatok[0],
+                "hegyseg": adatok[1],
+                "magassag": int(adatok[2])
+            }
+            hegyek.append(hegy)
+
+    print(f"Csúcsok száma: {len(hegyek)}")
+
+except FileNotFoundError:
+    print("A fájl nem található!")
+
+print(elvalaszto)
+
+for hegy in hegyek:
+    print(f"{hegy['nev']} -> {hegy['hegyseg']}: {hegy['magassag']} méter.")
+
+print(elvalaszto)
+
+osszeg = 0
+for hegy in hegyek:
+    osszeg += hegy["magassag"]
+
+print(f"Magasságok összege: {osszeg} méter.")
+
+if len(hegyek) > 0:
+    print(f"Átlagmagasság: {osszeg / len(hegyek):.1f} méter.")
+else:
+    print("Nincs adat!")
+
+print(elvalaszto)
+
+if len(hegyek) > 0:
+    hegyek.sort(key=rendezes)
+    legalacsonyabb = hegyek[0]
+    legmagasabb = hegyek[-1]
+
+    print(f"Legmagasabb: {legmagasabb['nev']} -> {legmagasabb['magassag']} méter, "
+          f"a legalacsonyabb: {legalacsonyabb['nev']} -> {legalacsonyabb['magassag']} méter.")
+else:
+    print("Nincs adat!")
+
+print(elvalaszto)
+
+hegyek.sort(key=rendezes, reverse=True)
+
+with open("magas_hegyek.txt", "w", encoding="UTF-8") as file:
+    for hegy in hegyek:
+        if hegy["magassag"] >= 900:
+            file.write(f"{hegy['nev']};{hegy['hegyseg']};{hegy['magassag']}\n")
+
+print("A legalább 900 méteres hegyek listáját a magas_hegyek.txt fájlba írtam!")</pre>
+<div class="megj">
+<p><b>Tanári megjegyzések</b></p>
+<p>Az f-stringekben külső <code>"</code>, belső <code>'</code> idézőjelet használ a megoldás. A <code>f"{hegy["nev"]}"</code> alak csak Python 3.12-től működik, régebbi verzión <code>SyntaxError</code>.</p>
+<p>A <code>rendezes</code> függvény a program elején van. Ha az <code>if</code> belsejében definiáljuk, hiányzó fájlnál a végén <code>NameError</code> jön, mert a záró rendezés már az <code>if</code> után fut.</p>
+<p>Az elválasztó vonal a ciklus után áll, így nem kell a ciklusban az utolsó elemet figyelni. A <code>:.1f</code> egy tizedesre kerekít, a <code>hegyek[-1]</code> az utolsó elem.</p>
+<p>A 2. feladat listája még fájlbeli sorrendben jelenik meg, a rendezés csak a 4. feladatban történik. Ez a bemeneti fájl miatt most egybeesik a magasság szerinti csökkenő sorrenddel.</p>
+</div>
+</details>
+
+<details>
+<summary>6. feladat: számlálás</summary>
+<pre class="kod">darab = 0
+for hegy in hegyek:
+    if hegy["magassag"] > 800:
+        darab += 1
+
+print(f"800 méternél magasabb csúcsok: {darab} db")</pre>
+<p>Kimenet: <code>800 méternél magasabb csúcsok: 5 db</code></p>
+</details>
+
+<details>
+<summary>7. feladat: keresés hegység szerint</summary>
+<pre class="kod">keresett = input("Melyik hegységet keresed? ").strip()
+
+talalt = False
+for hegy in hegyek:
+    if hegy["hegyseg"].lower() == keresett.lower():
+        print(f"{hegy['hegyseg']} csúcsa: {hegy['nev']} ({hegy['magassag']} m)")
+        talalt = True
+        break
+
+if not talalt:
+    print("Nincs ilyen hegység a listában!")</pre>
+</details>
+
+<details>
+<summary>8. feladat: kategóriák szótárral</summary>
+<pre class="kod">kategoriak = {"magas": 0, "közepes": 0, "alacsony": 0}
+
+for hegy in hegyek:
+    if hegy["magassag"] >= 900:
+        kategoriak["magas"] += 1
+    elif hegy["magassag"] >= 700:
+        kategoriak["közepes"] += 1
+    else:
+        kategoriak["alacsony"] += 1
+
+for kategoria, db in kategoriak.items():
+    print(f"{kategoria}: {db} db")</pre>
+<p>Kimenet: magas 3, közepes 6, alacsony 1 db.</p>
+</details>
+
+<details>
+<summary>9. feladat: eltérés az átlagtól</summary>
+<pre class="kod">atlag = sum(hegy["magassag"] for hegy in hegyek) / len(hegyek)
+
+for hegy in hegyek:
+    elteres = hegy["magassag"] - atlag
+    print(f"{hegy['nev']}: {elteres:+.1f} m")</pre>
+<p>Az első sor <code>Kékes: +187.7 m</code>, az utolsó <code>Zengő: -144.3 m</code>. Az összegzés itt generátorkifejezéssel készült, a ciklusos változat az alapfeladatban látható.</p>
+</details>
+
+<details>
+<summary>10. feladat: névsor ékezetekkel</summary>
+<pre class="kod">ekezet = str.maketrans("áéíóöőúüű", "aeioooouuu")
+
+hegyek.sort(key=lambda hegy: hegy["nev"].lower().translate(ekezet))
+
+for hegy in hegyek:
+    print(hegy["nev"])</pre>
+<div class="megj"><p>A sima <code>sort</code> a karakterek kódja szerint rendez, ezért az <b>Í</b> a <b>Z</b> után, a lista végére kerül. A <code>translate</code> rendezéskor az ékezetes betűket ékezet nélküli párjukra cseréli, a megjelenő nevek közben változatlanok maradnak. A helyes sorrend: Csóványos, Dobogó-kő, Írott-kő, Istállós-kő, Karancs, Kékes, Kőris-hegy, Nagy-Milic, Pilis, Zengő.</p></div>
+</details>
+
+<details>
+<summary>11. feladat: új csúcs felvétele</summary>
+<pre class="kod">nev = input("Csúcs neve: ").strip()
+hegyseg = input("Hegység: ").strip()
+
+try:
+    magassag = int(input("Magasság (méter): "))
+except ValueError:
+    print("A magasságnak egész számnak kell lennie!")
+else:
+    with open("hegyek.txt", "a", encoding="UTF-8") as file:
+        file.write(f"{nev};{hegyseg};{magassag}\n")
+    print("Az új csúcs bekerült a fájlba!")</pre>
+<div class="megj"><p>Ha a <code>hegyek.txt</code> utolsó sora nem újsorral végződik, az új adat az utolsó sor mögé tapad. Ilyenkor érdemes a fájl végén ellenőrizni az újsort, vagy az írást <code>"\n"</code>-nel kezdeni.</p></div>
+</details>
+
+<details>
+<summary>12. feladat (kihívás): hibatűrő beolvasás</summary>
+<pre class="kod">hegyek = []
+hibas = 0
+
+with open("hegyek.txt", "r", encoding="UTF-8") as file:
+    for sor in file:
+        if sor.strip() == "":
+            continue
+        adatok = sor.strip().split(";")
+        if len(adatok) != 3:
+            hibas += 1
+            continue
+        try:
+            magassag = int(adatok[2])
+        except ValueError:
+            hibas += 1
+            continue
+        hegyek.append({"nev": adatok[0], "hegyseg": adatok[1], "magassag": magassag})
+
+print(f"Beolvasva: {len(hegyek)} csúcs, kihagyott sor: {hibas} db")</pre>
+<p>A <code>continue</code> a hibás sort átugorja, a program a következő sorral folytatja. Az eredeti fájllal a kimenet: <code>Beolvasva: 10 csúcs, kihagyott sor: 0 db</code>.</p>
+</details>
+
+</main>
+<footer><div style="max-width:820px;margin:0 auto;padding:0 20px">Az adatok a feladatban megadott hegyek.txt fájlból származnak.</div></footer>
+<script>
+document.querySelectorAll("pre.kod").forEach(function(p){
+  var szoveg=p.textContent, b=document.createElement("button");
+  b.textContent="Másolás";
+  b.onclick=function(){
+    navigator.clipboard.writeText(szoveg).then(function(){
+      b.textContent="Kész";setTimeout(function(){b.textContent="Másolás"},1500);
+    });
+  };
+  p.appendChild(b);
+});
+</script>
+</body>
+</html>
